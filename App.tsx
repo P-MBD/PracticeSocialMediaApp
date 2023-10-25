@@ -1,8 +1,10 @@
 import React from "react";
-
+import {SafeAreaView,Text } from "react-native";
 const App=()=> {
 
-return  null;
-}
+return(
+  <Text style={{fontFamily: 'Inter'}}>Hello World</Text>
+  );
+};
 
 export default App;
