@@ -1,9 +1,12 @@
 import React from "react";
 import {SafeAreaView,Text } from "react-native";
-const App=()=> {
+import Title from "./components/Title";
 
+const App=()=> {
 return(
-  <Text style={{fontFamily: 'Inter'}}>Hello World</Text>
+  <SafeAreaView>
+      <Title title={"Let's Explore"} />
+  </SafeAreaView>
   );
 };
 
