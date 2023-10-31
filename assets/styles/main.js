@@ -7,7 +7,7 @@ const style = StyleSheet.create({
         flex:1, 
         flexDirection:'row',
          alignItems:'center',justifyContent:'space-between'},
-    messageIcon:
+    messageNumber:
         {
             fontSize:6,
             fontFamily:'Inter',
@@ -26,7 +26,15 @@ const style = StyleSheet.create({
             alignItems:'center',
             justifyContent:'center',
             position:'absolute',
-          }
+          },
+    messageIcon:{
+            backgroundColor:'#F9FAFB',
+            padding:12,
+            borderRadius:100,
+    },
+    userStoryContainer:{
+        paddingHorizontal:28,
+    }
     
 });
 export default style;
