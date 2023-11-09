@@ -40,11 +40,63 @@ const App=()=> {
       firstName:'Adam',
        id:8,
     },
+
+    {
+      firstName:'Ali',
+       id:9,
+    },
+    {  
+       firstName:'Amin',
+       id:10,
+     },
+    {
+      firstName:'Joseph',
+       id:11,
+    },
+    {  
+       firstName:'Angel',
+       id:12,
+     },
+     {
+      firstName:'White',
+      id:13,
+     },
+     {  
+        firstName:'Oliver',
+        id:14,
+    },
+    {
+      firstName:'Nata',
+       id:15,
+    },
+    {
+      firstName:'White',
+      id:16,
+     },
+     {  
+        firstName:'Oliver',
+        id:17,
+    },
+    {
+      firstName:'Nata',
+       id:18,
+    },
+  
 ];
 const pageSize=4;
 const [pageNumber, setPageNumber]= useState(1);
 const[isLoading,setIsLoading]= useState(false);
-const[renderedData, setRenderedData]= useState([]);
+const[renderedData, setRenderedData]= useState(data.slice(0,pageSize));
+const pagination= (data, pageNumber, pageSize)=>{
+    let startIndex = (pageNumber-1)*pageSize;
+    console.log(startIndex, renderedData.length);
+    if(startIndex > data.length){
+         return [];
+        } 
+        setPageNumber(pageNumber)
+     return data.slice(startIndex,startIndex+pageSize);
+}
+
 return(
   <SafeAreaView>
     <ScrollView>
@@ -58,7 +110,23 @@ return(
           </Pressable>
       </View>
        <View style={style.userStoryContainer}>
-              <FlatList   showsHorizontalScrollIndicator={false} horizontal={true} data={data}  renderItem={({item}) => <UserStory firstName={item.firstName} />}/>
+              <FlatList 
+               onEndReachedThreshold={0.5}
+               keyExtractor={(item => item.id.toString())}
+               onEndReached={()=> {
+                  if(!isLoading){
+                    setIsLoading(true);
+                   setRenderedData(prev=>[
+                    ...prev,
+                     ...pagination(data, pageNumber+1, pageSize)
+                  ]);
+                   setIsLoading(false);
+                  }
+               }}
+                showsHorizontalScrollIndicator={false}
+                 horizontal={true}
+                  data={renderedData} 
+                  renderItem={({item}) => <UserStory firstName={item.firstName} />}/>
       </View>
     </ScrollView>
   </SafeAreaView>
