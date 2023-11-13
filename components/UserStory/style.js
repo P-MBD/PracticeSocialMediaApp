@@ -1,7 +1,9 @@
 import {StyleSheet} from 'react-native';
 const style= StyleSheet.create({
     storyContainer:{
-        marginRight:20,       
+        paddingHorizontal:28,
+        marginRight:12,    
+        height:100,   
     },
     name:{
         textAlign:'center',
