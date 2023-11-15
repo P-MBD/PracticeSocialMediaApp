@@ -1,17 +1,11 @@
 import React, {useState} from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  View,
-  Text,
-  FlatList,
-} from 'react-native';
+import {Pressable, SafeAreaView, View, Text, FlatList} from 'react-native';
 
 //Custom Components
 import Title from './components/Title/Title';
 import UserStory from './components/UserStory/UserStory';
 import UserPost from './components/UserPost/UserPost';
+
 //FontAwesome Icons
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faEnvelope} from '@fortawesome/free-regular-svg-icons';
@@ -124,10 +118,8 @@ const App = () => {
   const [renderedData, setRenderedData] = useState(data.slice(0, pageSize));
 
   // Define state variable for the data to be rendered in the user posts container
-  //@TODO This should be pageSizePosts, I forgot to mention it in this particular lesson
-  //we'll fix that in the upcoming lessons
   const [renderedDataPosts, setRenderedDataPosts] = useState(
-    posts.slice(0, pageSize),
+    posts.slice(0, pageSizePosts),
   );
 
   /**
@@ -156,73 +148,99 @@ const App = () => {
   return (
     // Use the SafeAreaView component to ensure content is displayed within the safe area boundaries of the device
     <SafeAreaView>
-      {/* Use ScrollView to allow users to scroll through content */}
-      <ScrollView>
-        {/* Use View to create a container for title and icon */}
-        <View style={style.header}>
-          {/* Use custom Title component to display the title */}
-          <Title title={"Let's Explore"} />
-          {/* Use Pressable to create a clickable component */}
-          <Pressable style={style.messageIcon}>
-            {/* Use FontAwesomeIcon component to display an icon from FontAwesome icon set */}
-            <FontAwesomeIcon icon={faEnvelope} color={'#CACDDE'} size={20} />
-            {/* Use View to create a container for message number */}
-            <View style={style.messageNumberContainer}>
-              {/* Use Text to display the number of messages */}
-              <Text style={style.messageNumber}>2</Text>
+      {/* Use FlatList to display user stories */}
+      <FlatList
+        ListHeaderComponent={
+          <>
+            {/* Use View to create a container for title and icon */}
+            <View style={style.header}>
+              {/* Use custom Title component to display the title */}
+              <Title title={"Let's Explore"} />
+              {/* Use Pressable to create a clickable component */}
+              <Pressable style={style.messageIcon}>
+                {/* Use FontAwesomeIcon component to display an icon from FontAwesome icon set */}
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  color={'#CACDDE'}
+                  size={20}
+                />
+                {/* Use View to create a container for message number */}
+                <View style={style.messageNumberContainer}>
+                  {/* Use Text to display the number of messages */}
+                  <Text style={style.messageNumber}>2</Text>
+                </View>
+              </Pressable>
             </View>
-          </Pressable>
-        </View>
-        {/* Use View to create a container for the user stories */}
-      <View style={style.userStoryContainer}>
-              <FlatList 
-               onEndReachedThreshold={0.5}
-               keyExtractor={(item => item.id.toString())}
-               onEndReached={()=> {
-                  if(!isLoading){
+            {/* Use View to create a container for the user stories */}
+            <View style={style.userStoryContainer}>
+              {/* Use FlatList to display user stories */}
+              <FlatList
+                onMomentumScrollBegin={() => setIsLoadingPosts(false)}
+                //when the user scrolls through half of the data call onEndReached function
+                onEndReachedThreshold={0.5}
+                keyExtractor={item => item.id.toString()}
+                onEndReached={() => {
+                  //if we are not already in the middle of fetching data then fetch the data
+                  if (!isLoading) {
+                    //set is loading to true because we just started fetching data
                     setIsLoading(true);
-                   setRenderedData(prev=>[
-                    ...prev,
-                     ...pagination(data, pageNumber+1, pageSize)
-                  ]);
-                   setIsLoading(false);
+                    setRenderedData(prev => [
+                      ...prev,
+                      ...pagination(data, pageNumber + 1, pageSize),
+                    ]);
+                    //after updating rendered data we have to set is loading to false, because we loaded the data we needed
+                    setIsLoading(false);
                   }
-               }}
+                }}
+                // Hide horizontal scroll indicator
                 showsHorizontalScrollIndicator={false}
-                 horizontal={true}
-                  data={renderedData} 
-                  renderItem={({item}) => <UserStory firstName={item.firstName} />}/>
-      </View>
-       <View style={style.userPostContainer}>
-              <FlatList 
-              onMomentumScrollBegin={()=> setIsLoadingPosts(false)}
-               onEndReachedThreshold={0.5}
-               keyExtractor={(item => item.id.toString())}
-               onEndReached={()=> {
-                  if(!isLoading){
-                    setIsLoadingPosts(true);
-                    setRenderedDataPosts(prev=>[
-                    ...prev,
-                     ...pagination(posts, pageNumber+1, pageSize, true),
-                  ]);
-                   setIsLoadingPosts(false);
-                  }
-               }}
-                showsVerticalScrollIndicator={false}
-                  data={renderedDataPosts} 
-                  renderItem={({item}) => 
-                  <UserPost firstName={item.firstName}
-                            lastName= {item.lastName}
-                            comments = {item.comments}
-                            likes = {item.likes}
-                            bookmarks= {item.bookmarks}
-                            location = {item.location}
-                   />}/>
-      </View>
-
-     
-    
-      </ScrollView>
+                // Set FlatList to display horizontally
+                horizontal={true}
+                // Pass in data to be rendered in FlatList
+                data={renderedData}
+                // Define how each item should be rendered
+                renderItem={({item}) => (
+                  <UserStory firstName={item.firstName} />
+                )}
+              />
+            </View>
+          </>
+        }
+        //when the user scrolls through half of the data call onEndReached function
+        onMomentumScrollBegin={() => setIsLoadingPosts(false)}
+        onEndReachedThreshold={0.5}
+        keyExtractor={item => item.id.toString() + 'post'}
+        onEndReached={() => {
+          //if we are not already in the middle of fetching data then fetch the data
+          if (!isLoadingPosts) {
+            //set is loading to true because we just started fetching data
+            setIsLoadingPosts(true);
+            setRenderedDataPosts(prev => [
+              ...prev,
+              ...pagination(posts, postPageNumber + 1, pageSizePosts, true),
+            ]);
+            //after updating rendered data we have to set is loading to false, because we loaded the data we needed
+            setIsLoadingPosts(false);
+          }
+        }}
+        // Hide vertical scroll indicator
+        showsVerticalScrollIndicator={false}
+        // Pass in data to be rendered in FlatList
+        data={renderedDataPosts}
+        // Define how each item should be rendered
+        renderItem={({item}) => (
+          <View style={style.userPostContainer}>
+            <UserPost
+              firstName={item.firstName}
+              lastName={item.lastName}
+              comments={item.comments}
+              likes={item.likes}
+              bookmarks={item.bookmarks}
+              location={item.location}
+            />
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
