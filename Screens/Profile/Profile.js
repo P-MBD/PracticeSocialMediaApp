@@ -1,6 +1,7 @@
 import React from 'react';
 import {View,Text,Image,SafeAreaView,ScrollView} from 'react-native';
 import globalStyle from '../../assets/styles/main';
+import { ProfileTabNavigation } from '../../navigation/MainNavigation';
 import style from './style';
 const Profile = () => {
 return(
@@ -32,6 +33,9 @@ return(
             </View>
         </View>
         <View style={style.border}>
+        <View style={{height:'100%'}}>
+            <ProfileTabNavigation />
+        </View>
 
         </View>
      </ScrollView>
