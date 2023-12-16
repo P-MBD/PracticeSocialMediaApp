@@ -5,6 +5,7 @@ import Profile from "../Screens/Profile/Profile";
 import { Routes } from "./Routes";
 import {View, Text} from 'react-native';
 import ProfileTabTitle from "../components/ProfileTabTitle/ProfileTabTitle";
+import ProfileTabPost from "../components/ProfileTabPost/ProfileTabPost ";
 const Stack = createStackNavigator();
 const ProfileTabs = createMaterialTopTabNavigator();
 const Tab1= () => {
@@ -42,7 +43,7 @@ export const ProfileTabNavigation = () => {
         }}>
         <ProfileTabs.Screen
           name={'Tab1'}
-          component={Tab1}
+          component={ProfileTabPost}
           options={{
             tabBarLabel: ({focused}) => {
               return <ProfileTabTitle title={'Photos'} isFocused={focused} />;
@@ -51,7 +52,7 @@ export const ProfileTabNavigation = () => {
         />
         <ProfileTabs.Screen
           name={'Tab2'}
-          component={Tab2}
+          component={ProfileTabPost}
           options={{
             tabBarLabel: ({focused}) => {
               return <ProfileTabTitle title={'Videos'} isFocused={focused} />;
@@ -60,7 +61,7 @@ export const ProfileTabNavigation = () => {
         />
         <ProfileTabs.Screen
           name={'Tab3'}
-          component={Tab3}
+          component={ProfileTabPost}
           options={{
             tabBarLabel: ({focused}) => {
               return <ProfileTabTitle title={'Saved'} isFocused={focused} />;

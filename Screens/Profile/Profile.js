@@ -33,11 +33,13 @@ return(
             </View>
         </View>
         <View style={style.border}>
-        <View style={{height:'100%'}}>
+      
+            <View style={{height:'100%'}}>
             <ProfileTabNavigation />
+            </View>
         </View>
 
-        </View>
+        
      </ScrollView>
     </SafeAreaView>
 );
