@@ -4,7 +4,7 @@ import style from "./style";
 const Button = (props) => {
 return(
     <Pressable style={[style.button, props.isDisabled&& style.disabled]} onPress={()=>props.onPress()}>
-        <Text style={style.title}>{props.title}</Text>
+        <Text style={[style.title,props.isInactive&&style.inactiveTitle]}>{props.title}</Text>
     </Pressable>
     );
 }
