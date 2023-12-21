@@ -9,14 +9,12 @@ import { horizontalScale } from '../../assets/styles/scaling';
 import Badge from '../../components/Badge/Badge';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import Search from '../../components/Search/Search';
 
 const Home = () => {
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
-      <Header title={'Azzahri A.'} type={1} />
-      <Tab title={'Highlight'}/>
-      <Badge title={'Environment'}/>
-      <FontAwesomeIcon icon={faSearch} />
+      <Search onSearch={(value)=>{console.log(value)}} />
     </SafeAreaView>
   );
 };
